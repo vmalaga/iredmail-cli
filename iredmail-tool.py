@@ -179,6 +179,9 @@ def add_object(domain, mailbox):
 
         insert_policyd_status = 1
 
+        if check_object_exist(domain):
+            exit_script("Domain %s exist, not created" % (domain), 1)
+
         sql = "INSERT INTO domain (domain, settings, backupmx) VALUES ('%s','default_user_quota:0;default_language:%s;max_user_quota:0;',%d)" % (domain, settings.default_language, backupmx)
         # Insert object to database
         if insert_sql_query(db_vmail, sql):
@@ -194,7 +197,7 @@ def add_object(domain, mailbox):
         if insert_policyd_status == 1:
             exit_script("Domain added but problem during inserting into policy database", 1)
 
-        exit_script("Domain added", 0)
+        exit_script("Domain %s added" % (domain), 0)
 
 
 
@@ -422,6 +425,9 @@ except MySQLdb.Error, e:
 if args.action_search:
     search_database(args.domain, args.mailbox, args.search_string)
 elif args.action_add:
+    if args.domain and args.mailbox:
+        print "Only one action: -d domain or -m mailbox"
+        sys.exit(255)
     add_object(args.domain, args.mailbox)
 elif args.action_delete:
     delete_object(args.domain, args.mailbox)
