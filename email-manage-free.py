@@ -7,7 +7,7 @@ import MySQLdb
 from prettytable import from_db_cursor
 
 # iRedAdmin location
-iredadmin_install_path = '/usr/share/apache2/iRedAdmin-0.3'
+iredadmin_install_path = '/usr/share/apache2/iredadmin'
 # Add to path list
 sys.path.append(iredadmin_install_path)
 
@@ -224,7 +224,8 @@ def add_object(domain, mailbox):
 
         if settings.STORE_PASSWORD_IN_PLAIN_TEXT:
             pwscheme = 'PLAIN'
-        password = iredutils.generate_password_for_sql_mail_account(random_string, pwscheme=pwscheme)
+        #password = iredutils.generate_password_for_sql_mail_account(random_string, pwscheme=pwscheme)
+        password = iredutils.generate_password_hash(random_string, pwscheme=pwscheme)
 
         maildir = iredutils.generate_maildir_path(mailbox)
 

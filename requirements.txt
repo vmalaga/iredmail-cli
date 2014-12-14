@@ -1,0 +1,4 @@
+MySQL-python
+PrettyTable
+ipython
+web.py
